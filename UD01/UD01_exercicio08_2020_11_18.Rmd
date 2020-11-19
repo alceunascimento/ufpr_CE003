@@ -1,0 +1,76 @@
+---
+title: "UD01 Exercicio 08"
+author: "Alceu Nascimento"
+date: "18/11/2020"
+output:
+  html_document: 
+    df_print: kable
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r libraries, echo=FALSE, message=FALSE, warning=FALSE}
+library(readxl)
+library(mosaic)
+library(questionr)
+library(knitr)
+library(Hmisc)
+```
+
+```{r base de dados, echo=FALSE}
+exerc08 <- readxl::read_excel("/Users/nascimento/OneDrive - ufpr.br/Rstudio/Projetos/CE003_2020/data/UD01-atividade_2020_11_18.xlsx", sheet = "exerc-08")
+```
+
+## Item (a) : organizando as observações em faixas
+```{r tabela, echo=FALSE}
+TxHemgInterval <- cut2(exerc08$`Taxa de hemoglobina (g/cm3)`,
+  c(11,12,13,14,15,16,17))
+TxHemgInterval_tabela <- questionr::freq(
+  TxHemgInterval,
+  cum = TRUE,
+  total = TRUE
+  )
+kable(TxHemgInterval_tabela,
+      padding = 1,
+      caption = "Tabela de Frequência"
+)
+```
+
+## Item (b) : construindo o histograma
+```{r teste, echo=FALSE, fig.width=4, fig.height=4, fig.align='center'}
+graphics::hist(
+  exerc08$`Taxa de hemoglobina (g/cm3)`,
+  breaks = c(11,12,13,14,15,16,17),
+  main = "Histograma de Frequência Absoluta",
+  col = "gray",
+  ylab = "Frequência absoluta",
+  xlab = "Taxa de Hemoglobina (g/cm3)",
+  family = "serif"
+)
+```
+
+## Item (c) : determinando o terceiro quartil e a mediana
+```{r quantis, echo=FALSE}
+quantil08 <- mosaic::quantile(exerc08$`Taxa de hemoglobina (g/cm3)`, c(0.50, 0.75)
+)
+knitr::kable(quantil08,
+      col.names = "Taxa de Hemoglobina (g/cm3)",
+      caption = "Q2 (mediana) e Q3")
+```
+
+## Item (d) : Tabela de frequência da necessidade de acompanhamento médico
+```{r item d, echo=FALSE}
+Tab_Acompanhamento_medico <- questionr::freq(exerc08$`Acompanhamento medico`,
+    cum = TRUE,
+  total = TRUE
+)
+knitr::kable(Tab_Acompanhamento_medico,
+             caption = "Acompanhamento médico")
+```
+
+**Notas**:
+Ajustar o R (bibliotecas), organizar e carregar base de dados.
+Carregar bibliotecas de leitura de Excel (readxl) e de estatistica (mosaic, Hmisc, questionr, knitr).
+Criar planilha de dados no Excel no diretorio "database" do R.
+Incluir na planilha a varivavel de "acompanhamento médico" (sim/não)
